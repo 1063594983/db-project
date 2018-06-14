@@ -66,6 +66,7 @@
 			this.$axios.get('/api/goods/getGoodsType').then(res => {
 				this.$store.commit('loadGoodsType', res.data);
 			})
+			this.$store.dispatch('loadStockList');
 		},
 		methods: {
 			handleFilter(option) {
