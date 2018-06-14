@@ -17,13 +17,19 @@
 			}
 		},
 		created() {
+			/*
 			this.$store.dispatch('loadCurrentMonthRecord');
 			console.log(this.$store.state.saleRecord.currentMonthRecord)
 			this.$store.dispatch('loadTypeNames');
+			*/
+			
 		},
 		methods: {
 			showGoods() {
-				console.log(this.$store.state.saleRecord.currentMonthRecord)
+				this.$store.dispatch("loadCustomerConsume", {
+				year: 2000
+			});
+			console.log(this.$store.getters.getCustomerConsumeByYear(2016));
 			}
 		},
 		components: {

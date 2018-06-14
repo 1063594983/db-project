@@ -66,6 +66,36 @@ router.get('/getUserRecord', (req, res) => {
 	})
 })
 
+router.get('/getCustomerConsume', (req, res) => {
+	var sql = $sql.user.getCustomerConsumeByYear;
+	var customerId = req.query.customer_id;
+	var year = req.query.year;
+	conn.query(sql, [customerId, year], (err, result) =>{
+		if(err) {
+			console.log(err);
+		}
+		if(result) {
+			let data = {
+				year: year,
+				data: []
+			}
+			for(let i = 1; i <= 12; i++) {
+				let flag = false;
+				result.forEach(value => {
+					if(value.month == (i)) {
+						data.data.push(value.total_sale_amount);
+						flag = true;
+					}
+				})
+				if(flag == false) {
+					data.data.push(0);
+				}
+			}
+			res.send(data);
+		}	
+	})
+})
+
 
 /*
 router.post('/', (req,res) => {

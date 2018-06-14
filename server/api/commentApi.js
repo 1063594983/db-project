@@ -43,7 +43,34 @@ router.get('/getAllComment', (req, res) => {
 	})
 })
 
+router.post('/addComment', (req, res) => {
+	var sql = $sql.comment.addComment;
+	var comments = req.body.comments;
+	var time = new Date().getTime();
+	comments.forEach(value => {
+		conn.query(sql, [value.comment, value.customer_id, value.rank, time, value.goods_id], (err, result) => {
+			if(err) {
+				console.log(err);
+			}
 
+		})
+	})
+	res.end();
+})
 
+router.post('/confirmComment', (req, res) => {
+	var params = req.body;
+	var sql = 'update sale_record set is_commented = 1 where record_id = ?';
+	var recordId = params.record_id;
+	console.log(recordId);
+	conn.query(sql, [recordId], (err, result) => {
+		if(err) {
+			console.log(err);
+		}
+		if(result) {
+			res.end();
+		}
+	})
+})
 
 module.exports = router;

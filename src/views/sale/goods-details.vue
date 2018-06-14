@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<goods-details :goods-details="getGoods(goods_id)" :commentSize="commentList.length"></goods-details>
+		<goods-details :goods-details="$store.getters.getGoodsById(goods_id)" :commentSize="commentList.length"></goods-details>
 		<el-row>
 			<el-col :span="8" :offset="8">
 				<h3>商品评价({{commentList.length}})</h3>
@@ -80,17 +80,12 @@
 		},
 		created() {
 			this.goods_id = this.$router.currentRoute.params.id;
+			console.log(this.goods_id)
+			console.log(this.$store.state.goods.goodsList);
+			console.log(this.$store.getters.getGoodsById(this.goods_id));
 		},
 		methods: {
-			getGoods(goods_id) {
-				var position;
-				this.goodsList.forEach((value, index) => {
-					if(value.goods_id == goods_id) {
-						position = index;
-					}
-				})
-				return this.goodsList[position];
-			}
+			
 		},
 		components: {
 			goodsDetails,

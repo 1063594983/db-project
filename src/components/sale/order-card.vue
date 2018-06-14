@@ -14,8 +14,7 @@
 					<el-row>
 						<el-col :span="12">
 							<b style="color: red;">￥{{$store.getters.getGoodsById(record.goods_id).goods_price}}</b>
-							<br />
-							X {{record.amount}}
+							<br /> X {{record.amount}}
 						</el-col>
 					</el-row>
 				</el-col>
@@ -28,9 +27,28 @@
 			<el-row>
 				<el-col :offset="10">
 					<el-button v-if="type==1" type="primary" @click="confirmReceive" round>确认收货</el-button>
-					<el-button v-if="type==2" type="primary" round>评价</el-button>
+					<el-button v-if="type==2" type="primary" @click="dialogVisible = true" round>评价</el-button>
 				</el-col>
 			</el-row>
+			<el-dialog title="商品评价" :visible.sync="dialogVisible">
+				<div>
+					<el-row v-for="(item, index) in goods" :key="item.index">
+						<el-col :span="3">
+							<img :src="JSON.parse($store.getters.getGoodsById(item.goods_id).goods_image)[0].src" />
+						</el-col>
+						<el-rate v-model="rank[index]" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" show-text>
+						</el-rate>
+						<el-col :span="12" :offset="2">
+							<el-input v-model="comment[index]" style="height: 100px; width: 600px;" type="textarea"></el-input>
+						</el-col>
+					</el-row>
+					<el-row>
+						<el-col :span="8" :offset="8">
+							<el-button type="primary" @click="submit" round>提交</el-button>
+						</el-col>
+					</el-row>
+				</div>
+			</el-dialog>
 		</el-card>
 	</div>
 </template>
@@ -39,13 +57,17 @@
 	export default {
 		data() {
 			return {
-				
+				dialogVisible: false,
+				rank: [],
+				value: 3,
+				comment: []
 			}
 		},
 		props: {
 			goods: Array,
 			type: Number,
-			totalPrice: Number
+			totalPrice: Number,
+			recordId: Number
 		},
 		computed: {
 			goodsNum() {
@@ -59,19 +81,45 @@
 				return this.$store.state.goodsList;
 			}
 		},
+		mounted() {
+			this.goods.forEach(value => {
+				this.rank.push(3);
+				this.comment.push("默认好评");
+			})
+		},
 		methods: {
 			confirmReceive() {
-				/*
-				this.$axios.post('/api/goods/confirmReceive', {
-					recordId: this.recordId
-				}).then(res => {
-					this.$message({
-						message: '已确认收货',
-						type: 'success'
-					});
-				})
-				*/
 				this.$emit('confirmReceive', this.recordId);
+			},
+			submit() {
+				console.log(this.comment);
+				console.log(this.rank);
+				var data = [];
+				this.goods.forEach((value, index) => {
+					data.push({
+						goods_id: value.goods_id,
+						rank: this.rank[index],
+						comment: this.comment[index],
+						customer_id: this.$cookieStore.getCookie("username")
+					})
+				})
+				this.$axios.post('/api/comment/addComment', {
+					comments: data
+				}).then(() => {
+					this.rank = [];
+					this.comment = [];
+					this.$axios.post('/api/comment/confirmComment', {
+						record_id: this.recordId
+					}).then(() => {
+						this.$message({
+							message: '评论完成',
+							type: 'success'
+						})
+						this.dialogVisible = false;
+						this.$store.dispatch('loadCustomerRecord')
+					})
+				})
+				
 			}
 		}
 	}

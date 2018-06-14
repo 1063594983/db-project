@@ -25,7 +25,11 @@
 		},
 		methods: {
 			update() {
-				
+				this.$store.dispatch('loadCustomerConsume', {
+					year: this.year.getFullYear()
+				}).then(() => {
+					this.drawLine();
+				})				
 			},
 			drawLine() {
 				var myChart = this.$echarts.init(document.getElementById('myChart'));
@@ -38,19 +42,7 @@
 						trigger: 'axis'
 					},
 					legend: {
-						data: this.typeNames,
-						top: 30,
-						selected: {
-							'生鲜水果': false,
-							'进口食品': false,
-							'休闲零食': false,
-							'酒水乳饮': false,
-							'粮油副食': false,
-							'美妆个护': false,
-							'家居用品': false,
-							'家庭清洁': false,
-							'母婴玩具': false
-						}
+						
 					},
 					grid: {
 						left: '3%',
@@ -74,7 +66,11 @@
 					yAxis: {
 						name: '消费/元'
 					},
-					series: this.$store.state.chartData.lineChart
+					series: [{
+						data: this.$store.getters.getCustomerConsumeByYear(this.year.getFullYear()),
+						type: 'line',
+						name: '消费'
+					}]
 				};
 				myChart.setOption(option);
 			}

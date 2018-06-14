@@ -8,7 +8,8 @@ var sqlMap = {
 		getUserRecord: 'select * from sale_record where customer_id = ? order by record_time desc',
 		getCustomerInfo: 'select * from member where login_user = ?',
 		getSimilarUser: 'call get_similar_user(?)',
-		confirmRecommend: 'update member set is_first = 0 where login_user = ?'
+		confirmRecommend: 'update member set is_first = 0 where login_user = ?',
+		getCustomerConsumeByYear: 'select * from customer_sale_month_statistics where customer_id = ? and year = ? order by month'
 	},
 	goods: {
 		get: 'select * from goods natural join goods_type natural join stock order by goods_id',
@@ -35,13 +36,13 @@ var sqlMap = {
 		getRecord: 'select * from goods_record',
 		getYearRecord: 'select * from sale_month_statistics where year = ? order by month',
 		getYearRecord2: 'select * from sale_year_statistics where year = ?',
-		getUserYearRecord: 'select * from sale_month_statistics where year = ? and ',
 		getMonthSale: 'call get_month_sale(?, ?, ?)',
 		getCurrentMonthRecord: 'call get_current_month_sale()'
 	},
 	comment: {
 		getCommentByGoods: 'select * from comment where goods_id = ?',
-		getAllComment: 'select * from comment'
+		getAllComment: 'select * from comment order by time desc',
+		addComment: 'insert into comment(content, author, rank, time, goods_id) values(?, ?, ?, ?, ?)'
 	},
 	emp: {
 		getEmp: 'select * from employee'

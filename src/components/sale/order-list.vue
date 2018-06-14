@@ -10,7 +10,7 @@
 		<el-collapse>
 			<el-collapse-item v-for="(order, x) in showList" :title="new Date(order.record_time * 1).datetime()" :key="x">
 				<order-card :goods="order.goods" :total-price="order.total_price"
-					 :type="type" @confirmReceive="handleConfirmReceive"></order-card>
+					 :type="type" @confirmReceive="handleConfirmReceive" :record-id="order.record_id"></order-card>
 			</el-collapse-item>
 			<el-pagination :current-page.sync="currentPage" :page-size="pageSize" layout="total, prev, pager, next" :total="orderList.length">
 			</el-pagination>

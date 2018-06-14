@@ -50,10 +50,17 @@
 			addToCart() {
 				this.$store.dispatch('addOneItem', this.goodsDetails.goods_id);
 			},
-			gotoGoodsDetails() {
+			gotoGoodsDetails() {	
+				
 				this.$router.push({
 					path: '/sale/goods/' + this.goodsDetails.goods_id
 				})
+				/*
+				const {href} = this.$router.resolve({
+					path: '/sale/goods/' + this.goodsDetails.goods_id
+				})
+				window.open(href, "_blank");
+				*/
 			},
 			isDiscount() {
 				return this.$store.getters.isDiscount(this.goodsDetails.goods_id);

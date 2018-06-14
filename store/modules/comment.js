@@ -13,7 +13,7 @@ const getters = {
 
 // actions
 const actions = {
-	loadComments(context, comments) {
+	loadComments(context) {
 		new Vue().$axios.get('/api/comment/getAllComment').then(res => {
 			context.commit('loadComments', res.data);
 		})

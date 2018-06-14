@@ -46,6 +46,7 @@
 			}
 		},
 		created() {
+			this.$store.dispatch("loadCurrentMonthRecord");
 			this.$axios.get('/api/customer/getCustomerInfo', {
 				params: {
 					customer_id: this.$cookieStore.getCookie('username')
@@ -67,6 +68,7 @@
 				this.$store.commit('loadGoodsType', res.data);
 			})
 			this.$store.dispatch('loadStockList');
+			this.$store.dispatch('loadComments');
 		},
 		methods: {
 			handleFilter(option) {

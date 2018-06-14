@@ -1,18 +1,22 @@
 import Vue from 'vue'
 
 const state = {
-	currentMonthRecord: []
+	currentMonthRecord: [{
+		good_id: '1',
+		goods_name: 'sss',
+		num: 10
+	}]
 }
 
 // getters
 const getters = {
 	getMonthRecordById: (state) => (goods_id) => {
-		var result;
+		var result = 0;
 		state.currentMonthRecord.forEach(value => {
 			if(value.goods_id == goods_id) {
 				result = value.num;
 			}
-		})
+		})		
 		return result;
 	}
 }

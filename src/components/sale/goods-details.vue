@@ -55,8 +55,7 @@
 	export default {
 		data() {
 			return {
-				goodsAmount: 1,
-				monthSale: 0
+				goodsAmount: 1
 			}
 		},
 		computed: {
@@ -67,6 +66,9 @@
 				var price = this.goodsDetails.goods_price * this.$store.getters.getDiscountById(this.goodsDetails.goods_id);
 				var price = price.toFixed(2);
 				return price;
+			},
+			monthSale() {
+				return this.$store.getters.getMonthRecordById(this.goodsDetails.goods_id);
 			}
 		},
 		props: {
@@ -76,13 +78,8 @@
 			}
 		},
 		created() {
-			this.$axios.get('/api/record/getMonthSale', {
-				params: {
-					goods_id: this.goodsDetails.goods_id
-				}
-			}).then(res => {
-				this.monthSale = res.data.num;
-			})
+			this.$store.dispatch("loadCurrentMonthRecord");
+			console.log(this.$store.state.saleRecord.currentMonthRecord)
 		},
 		methods: {
 			addCart() {

@@ -80,7 +80,6 @@ router.post('/confirmRecommend', (req, res) => {
 	habit.push(customer_id)
 	var sql = $sql.user.confirmRecommend;
 	var sql2 = $sql.customer_habit.init;
-	console.log(customer_id);
 	conn.query(sql, [customer_id], (err, result) => {
 		if(err) {
 			console.log(err);

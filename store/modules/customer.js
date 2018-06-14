@@ -3,12 +3,21 @@ import Vue from 'vue'
 const state = {
 	customerHabit: [],
 	customerInfo: [],
-	customerRecord: []
+	customerRecord: [],
+	customerConsume: []
 }
 
 // getters
 const getters = {
-	
+	getCustomerConsumeByYear: (state) => (year) => {
+		var result;
+		state.customerConsume.forEach(value => {
+			if(value.year == year) {
+				result = value.data;
+			}
+		})
+		return result;
+	}
 }
 
 // actions
@@ -39,6 +48,7 @@ const actions = {
 				var result = [];
 				res.data.forEach(value => {
 					result.push({
+						record_id: value.record_id,
 						record_time: value.record_time,
 						goods: JSON.parse(value.content),
 						total_price: value.total_price,
@@ -49,6 +59,16 @@ const actions = {
 				context.commit('loadCustomerRecord', result);
 			}
 		)
+	},
+	loadCustomerConsume: (context, option) => {
+		new Vue().$axios.get('/api/user/getCustomerConsume', {
+			params: {
+				customer_id: new Vue().$cookieStore.getCookie('username'),
+				year: option.year
+			}
+		}).then(res => {
+			context.commit("loadCustomerConsume", res.data);
+		})
 	}
 }
 
@@ -62,6 +82,18 @@ const mutations = {
 	},
 	loadCustomerRecord: (state, data) => {
 		state.customerRecord = data;
+	},
+	loadCustomerConsume: (state, data) => {
+		var flag = false;
+		state.customerConsume.forEach(value => {
+			if(value.year == data.year) {
+				value.data = data.data;
+				flag = true;
+			}
+		})
+		if(flag == false) {
+			state.customerConsume.push(data);
+		}
 	}
 }
 
