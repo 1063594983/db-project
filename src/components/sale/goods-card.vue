@@ -7,12 +7,7 @@
 				<b>￥{{ realPrice }}</b>
 			</p>
 			<p :style="{textDecoration: goodsNameStyle}">{{ goodsDetails.goods_name }}</p>
-			<!--
 			<p>月销量:{{ $store.getters.getMonthRecordById(goodsDetails.goods_id) }}</p>
-			-->
-			<el-rate v-if="rank != 0" v-model="rank" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" disabled>
-			</el-rate>
-			<p v-else>无人评价</p>
 			<el-button @click.stop="addToCart" round>加入购物车</el-button>
 		</el-card>
 	</div>
