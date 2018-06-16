@@ -7,6 +7,12 @@
 				<b>￥{{ realPrice }}</b>
 			</p>
 			<p :style="{textDecoration: goodsNameStyle}">{{ goodsDetails.goods_name }}</p>
+			<!--
+			<p>月销量:{{ $store.getters.getMonthRecordById(goodsDetails.goods_id) }}</p>
+			-->
+			<el-rate v-if="rank != 0" v-model="rank" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" disabled>
+			</el-rate>
+			<p v-else>无人评价</p>
 			<el-button @click.stop="addToCart" round>加入购物车</el-button>
 		</el-card>
 	</div>
@@ -17,7 +23,8 @@
 		data() {
 			return {
 				goodsNameStyle: "none",
-				discount: 1
+				discount: 1,
+				rank: 0
 			}
 		},
 		props: {
@@ -40,6 +47,9 @@
 				return price;
 			}
 		},
+		created() {
+			this.rank = (this.goodsDetails.rank * 1).toFixed(2) * 1;;
+		},
 		methods: {
 			enter() {
 				this.goodsNameStyle = "underline";
@@ -50,8 +60,8 @@
 			addToCart() {
 				this.$store.dispatch('addOneItem', this.goodsDetails.goods_id);
 			},
-			gotoGoodsDetails() {	
-				
+			gotoGoodsDetails() {
+
 				this.$router.push({
 					path: '/sale/goods/' + this.goodsDetails.goods_id
 				})
@@ -64,7 +74,7 @@
 			},
 			isDiscount() {
 				return this.$store.getters.isDiscount(this.goodsDetails.goods_id);
-			}		
+			}
 		}
 	}
 </script>

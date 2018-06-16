@@ -11,8 +11,7 @@
 			</el-col>
 		</el-row>
 		<el-dialog title="选择喜好" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-			<recommend-card @confirm="handleConfirm"></recommend-card>
-			
+			<recommend-card @confirm="handleConfirm"></recommend-card>		
 		</el-dialog>
 	</div>
 </template>
@@ -24,7 +23,6 @@
 	export default {
 		data() {
 			return {
-				goodsList: [],
 				goodsListFiltered: [],
 				text: '你可能想买',
 				goods_name: '',
@@ -43,9 +41,13 @@
 			},
 			recommendList() {
 				return this.$store.state.goods.recommendGoodsList
+			},
+			goodsList() {
+				return this.$store.state.goods.goodsList;
 			}
 		},
 		created() {
+			this.goodsListFiltered = this.goodsList;
 			this.$store.dispatch("loadCurrentMonthRecord");
 			this.$axios.get('/api/customer/getCustomerInfo', {
 				params: {
@@ -58,21 +60,17 @@
 					this.dialogVisible = false;
 				}
 			})
+			this.$store.dispatch('loadGoods')	
 			this.$store.dispatch('loadRecommendGoodsList')								
-			this.$axios.get('/api/goods/getGoods').then(res => {
-				this.goodsList = res.data;
-				this.goodsListFiltered = this.goodsList;
-				this.$store.commit('loadGoods', this.goodsList);
-			})
-			this.$axios.get('/api/goods/getGoodsType').then(res => {
-				this.$store.commit('loadGoodsType', res.data);
-			})
+			this.$store.dispatch("loadTypeNames");
 			this.$store.dispatch('loadStockList');
 			this.$store.dispatch('loadComments');
+			this.$store.dispatch('loadGoodsRank');
 		},
 		methods: {
 			handleFilter(option) {
 				this.filterOption = option;
+				console.log(this.filterOption)
 				this.updateList();
 			},
 			updateList() {
@@ -80,8 +78,24 @@
 				var maxPrice = this.filterOption.price.maxPrice;
 				var isDiscount = this.filterOption.discount;
 				var types = this.filterOption.type;
-				var result = [];
-				this.goodsList.forEach(value => {
+				var result = [];				
+				var temp = [];
+				if(this.filterOption.discount == 1) {
+					temp = this.goodsList;
+				} else if(this.filterOption.discount == 2) {
+					this.goodsList.forEach(value => {
+						if(this.$store.getters.isDiscount(value.goods_id)) {
+							temp.push(value);
+						}
+					})
+				} else {
+					this.goodsList.forEach(value => {
+						if(!this.$store.getters.isDiscount(value.goods_id)) {
+							temp.push(value);
+						}
+					})
+				}
+				temp.forEach(value => {
 					if(types.indexOf(value.type_name) != -1 &&
 						value.goods_price >= (minPrice == '' ? 0 : minPrice) &&
 						value.goods_price <= (maxPrice == '' ? 9999 : maxPrice)) {

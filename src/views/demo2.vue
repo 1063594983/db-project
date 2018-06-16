@@ -29,7 +29,8 @@
 				this.$store.dispatch("loadCustomerConsume", {
 				year: 2000
 			});
-			console.log(this.$store.getters.getCustomerConsumeByYear(2016));
+			this.$store.dispatch('loadGoodsRank');
+			console.log(this.$store.state.goods.goodsRank)
 			}
 		},
 		components: {

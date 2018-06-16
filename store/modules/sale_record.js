@@ -1,11 +1,7 @@
 import Vue from 'vue'
 
 const state = {
-	currentMonthRecord: [{
-		good_id: '1',
-		goods_name: 'sss',
-		num: 10
-	}]
+	currentMonthRecord: []
 }
 
 // getters

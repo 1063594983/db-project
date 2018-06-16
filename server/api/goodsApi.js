@@ -607,6 +607,18 @@ router.get('/getStock', (req, res) => {
 	})
 })
 
+router.get('/getGoodsRank', (req, res) => {
+	var sql = $sql.goods.getGoodsRank;
+	conn.query(sql, [], (err, result) => {
+		if(err) {
+			console.log(err);
+		}
+		if(result) {
+			res.send(result);
+		}
+	})
+})
+
 /*
  * 生成库存数据
 router.get('/generateData', (req, res) => {

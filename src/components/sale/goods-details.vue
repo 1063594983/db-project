@@ -78,8 +78,7 @@
 			}
 		},
 		created() {
-			this.$store.dispatch("loadCurrentMonthRecord");
-			console.log(this.$store.state.saleRecord.currentMonthRecord)
+			
 		},
 		methods: {
 			addCart() {

@@ -6,7 +6,8 @@ const state = {
 	discountList: [],
 	recommendDiscountList: [],
 	stockList: [],
-	recommendGoodsList: []
+	recommendGoodsList: [],
+	goodsRank: []
 }
 
 // getters
@@ -75,6 +76,15 @@ const getters = {
 			}
 		})
 		return result;
+	},
+	getGoodsRankById: (state) => (goods_id) => {
+		var result = 0;
+		state.goodsList.forEach(value => {
+			if(value.goods_id == goods_id) {
+				result = value.rank;
+			}
+		})
+		return result;
 	}
 }
 
@@ -117,6 +127,11 @@ const actions = {
 			})
 			context.commit('loadRecommendGoodsList', result);
 		})
+	},
+	loadGoodsRank: (context) => {
+		new Vue().$axios.get('/api/goods/getGoodsRank').then(res => {
+			context.commit('loadGoodsRank', res.data);
+		})
 	}
 }
 
@@ -139,6 +154,9 @@ const mutations = {
 	},
 	loadRecommendGoodsList: (state, data) => {
 		state.recommendGoodsList = data;
+	},
+	loadGoodsRank: (state, data) => {
+		state.goodsRank = data;
 	}
 }
 
