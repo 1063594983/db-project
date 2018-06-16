@@ -44,7 +44,6 @@ export default new Router({
     },
     {
     	path: '/sale',
-    	name: 'sale',
     	component: sale,
     	children: [{
     		path: '',
@@ -78,7 +77,6 @@ export default new Router({
     },
     {
     	path: '/manage',
-    	name: 'manage',
     	component: manage,
     	children: [{
     		path: '',
