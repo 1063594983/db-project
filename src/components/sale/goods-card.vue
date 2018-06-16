@@ -7,7 +7,6 @@
 				<b>￥{{ realPrice }}</b>
 			</p>
 			<p :style="{textDecoration: goodsNameStyle}">{{ goodsDetails.goods_name }}</p>
-			<p>月销量:{{ $store.getters.getMonthRecordById(goodsDetails.goods_id) }}</p>
 			<el-button @click.stop="addToCart" round>加入购物车</el-button>
 		</el-card>
 	</div>

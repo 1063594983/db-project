@@ -66,6 +66,7 @@
 			this.$store.dispatch('loadStockList');
 			this.$store.dispatch('loadComments');
 			this.$store.dispatch('loadGoodsRank');
+			this.$store.dispatch('loadDiscountList');
 		},
 		methods: {
 			handleFilter(option) {
