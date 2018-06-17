@@ -63,6 +63,11 @@
 				return this.$store.state.goodsType;
 			}
 		},
+		created() {
+			this.typeNames.forEach(value => {
+				this.filterOption.type.push(value);
+			})
+		},
 		methods: {
 			handleChange() {
 

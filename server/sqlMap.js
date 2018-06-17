@@ -12,14 +12,15 @@ var sqlMap = {
 		getCustomerConsumeByYear: 'select * from customer_sale_month_statistics where customer_id = ? and year = ? order by month'
 	},
 	goods: {
-		get: 'select * from goods natural join goods_type natural join stock order by goods_id',
+		get: 'select * from (goods natural join goods_type natural join stock) natural join goods_rank order by goods_id',
 		getALlGoodsDescription: 'select goods_description from goods',
 		getById: 'select * from goods natural join goods_type where goods_id = ?',
 		buyGoods: 'insert into sale_record(content, record_time, customer_id, total_price) values(?, ?, ?, ?)',
 		buyGoods2: 'insert into sale_record2(goods_id, amount, record_time, customer_id) values(?, ?, ?, ?)',
 		getDiscount: 'select * from discount where start_time <= ? and end_time >= ?',
 		addDiscount: 'insert into discount(goods_id, discount, start_time, end_time) values(?, ?, ?, ?)',
-		deleteDiscount: 'delete from discount where discount_id = ?'
+		deleteDiscount: 'delete from discount where discount_id = ?',
+		getGoodsRank: 'select * from goods_rank'
 	},
 	goods_type: {
 		get: 'select type_id, type_name from goods_type'

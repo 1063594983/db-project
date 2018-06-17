@@ -4,8 +4,9 @@
 		<el-row>
 			<el-col :span="8" :offset="8">
 				<h3>商品评价({{commentList.length}})</h3>
-				<el-rate v-model="rate" disabled show-score text-color="#ff9900" score-template="{value}">
+				<el-rate v-if="rank != 0" v-model="rank" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" disabled show-score>
 				</el-rate>
+				<p v-else>无人评价</p>
 			</el-col>
 		</el-row>
 		<el-row>
@@ -28,7 +29,7 @@
 	export default {
 		data() {
 			return {
-				rate: 3.7,
+				rank: 3,
 				recommendList: [{
 					"type_id": 1,
 					"goods_id": 1,
@@ -78,11 +79,13 @@
 				return this.$store.getters.getCommentByGoodsId(this.goods_id);
 			}
 		},
+		mounted() {
+			this.goods_id = this.$router.currentRoute.path.split('/').pop();
+		},
 		created() {
-			this.goods_id = this.$router.currentRoute.params.id;
-			console.log(this.goods_id)
-			console.log(this.$store.state.goods.goodsList);
-			console.log(this.$store.getters.getGoodsById(this.goods_id));
+			this.$store.dispatch("loadCurrentMonthRecord");
+			this.goods_id = this.$router.currentRoute.path.split('/').pop();
+			this.rank = this.$store.getters.getGoodsById(this.goods_id).rank.toFixed(1) * 1;
 		},
 		methods: {
 			

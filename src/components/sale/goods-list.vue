@@ -11,7 +11,8 @@
 						<el-menu-item index="priceDec">价格降序</el-menu-item>
 						<el-menu-item index="priceInc">价格升序</el-menu-item>
 					</el-submenu>
-					<el-menu-item index="2">销量</el-menu-item>
+					<el-menu-item index="saleDec">销量</el-menu-item>
+					<el-menu-item index="rankDec">评价</el-menu-item>
 				</el-menu>
 			</el-col>
 		</el-row>
@@ -98,6 +99,15 @@
 						this.incOrder();
 						this.seem = true;
 						break;
+					case 'saleDec':
+						this.seem = false;
+						this.saleDecOrder();
+						this.seem = true;
+						break;
+					case 'rankDec':
+						this.seem = false;
+						this.rankDecOrder();
+						this.seem = true;
 					default:
 						break;
 				}
@@ -124,6 +134,30 @@
 							this.goodsList[i] = this.goodsList[j];
 							this.goodsList[j] = temp;
 						}
+					}
+				}
+			},
+			saleDecOrder() {
+				for(let i = 0; i < this.goodsNum - 1; i++) {
+					for(let j = i + 1; j < this.goodsNum; j++) {
+						if(this.$store.getters.getMonthRecordById(this.goodsList[i].goods_id) 
+							< this.$store.getters.getMonthRecordById(this.goodsList[j].goods_id)) {
+								let temp = this.goodsList[i];
+								this.goodsList[i] = this.goodsList[j];
+								this.goodsList[j] = temp;
+							}
+					}
+				}
+			},
+			rankDecOrder() {
+				for(let i = 0; i < this.goodsNum - 1; i++) {
+					for(let j = i + 1; j < this.goodsNum; j++) {
+						if(this.$store.getters.getGoodsRankById(this.goodsList[i].goods_id) 
+							< this.$store.getters.getGoodsRankById(this.goodsList[j].goods_id)) {
+								let temp = this.goodsList[i];
+								this.goodsList[i] = this.goodsList[j];
+								this.goodsList[j] = temp;
+							}
 					}
 				}
 			}

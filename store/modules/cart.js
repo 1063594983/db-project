@@ -41,6 +41,10 @@ const actions = {
 	addOneItem: (context, goods_id) => {
 		if(context.rootGetters.getGoodsStockById(goods_id) >= context.rootGetters.getCartNumById(goods_id) + 1) {
 			context.commit('addOneItem', goods_id);
+			new Vue().$message({
+				message: '添加购物车成功',
+				type: 'success'
+			})
 		} else {
 			new Vue().$message({
 				message: '库存不足'
@@ -53,6 +57,10 @@ const actions = {
 		
 		if(context.rootGetters.getGoodsStockById(id) >= (context.rootGetters.getCartNumById(id) + num)) {
 			context.commit('addItems', record);
+			new Vue().$message({
+				message: '添加购物车成功',
+				type: 'success'
+			})
 		} else {
 			new Vue().$message({
 				message: '库存不足'

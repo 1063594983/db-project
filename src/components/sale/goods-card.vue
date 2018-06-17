@@ -17,7 +17,8 @@
 		data() {
 			return {
 				goodsNameStyle: "none",
-				discount: 1
+				discount: 1,
+				rank: 0
 			}
 		},
 		props: {
@@ -40,6 +41,9 @@
 				return price;
 			}
 		},
+		created() {
+			this.rank = (this.goodsDetails.rank * 1).toFixed(2) * 1;;
+		},
 		methods: {
 			enter() {
 				this.goodsNameStyle = "underline";
@@ -50,8 +54,8 @@
 			addToCart() {
 				this.$store.dispatch('addOneItem', this.goodsDetails.goods_id);
 			},
-			gotoGoodsDetails() {	
-				
+			gotoGoodsDetails() {
+
 				this.$router.push({
 					path: '/sale/goods/' + this.goodsDetails.goods_id
 				})
@@ -64,7 +68,7 @@
 			},
 			isDiscount() {
 				return this.$store.getters.isDiscount(this.goodsDetails.goods_id);
-			}		
+			}
 		}
 	}
 </script>

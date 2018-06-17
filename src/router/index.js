@@ -14,6 +14,8 @@ import userCenter from '@/views/sale/user-center'
 import userShoppingChart from '@/views/sale/user-shopping-chart'
 import customerHabitFanChart from '@/views/sale/user_shopping_chart/habit_fan-chart'
 import consume from '@/views/sale/user_shopping_chart/consume'
+import contactUs from '@/views/sale/contact-us'
+import about from '@/views/sale/about'
 
 import manage from '@/views/manage/index'
 import employeeInfo from '@/views/manage/employee-info'
@@ -26,6 +28,7 @@ import goodsSale2 from '@/views/manage/goods-sale'
 Vue.use(Router)
 
 export default new Router({
+	mode: 'history',
   routes: [
     {
       path: '/',
@@ -44,7 +47,6 @@ export default new Router({
     },
     {
     	path: '/sale',
-    	name: 'sale',
     	component: sale,
     	children: [{
     		path: '',
@@ -74,11 +76,16 @@ export default new Router({
     			path: 'consume',
     			component: consume
     		}]
+    	}, {
+    		path: 'contact-us',
+    		component: contactUs
+    	}, {
+    		path: 'about',
+    		component: about
     	}]
     },
     {
     	path: '/manage',
-    	name: 'manage',
     	component: manage,
     	children: [{
     		path: '',
