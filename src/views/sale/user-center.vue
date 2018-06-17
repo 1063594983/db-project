@@ -47,7 +47,6 @@
 		created() {
 			this.$store.dispatch('loadCustomerInfo');
 			this.$store.dispatch('loadCustomerRecord')
-			console.log(this.$store.state.customer.customerRecord)
 		},
 		methods: {
 			getRecords() {

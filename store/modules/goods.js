@@ -80,6 +80,15 @@ const getters = {
 			}
 		})
 		return result;
+	},
+	getGoodsRankById: (state) => (goods_id) => {
+		var result;
+		state.goodsList.forEach(value => {
+			if(value.goods_id == goods_id) {
+				result = value.rank;
+			}
+		})
+		return result;
 	}
 }
 

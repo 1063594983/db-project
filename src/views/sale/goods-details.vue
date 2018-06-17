@@ -55,7 +55,6 @@
 					goods_id: this.goods_id
 				}
 			}).then(res => {
-				console.log(res.data);
 				res.data.forEach(value => {
 					this.recommendList.push(this.$store.getters.getGoodsById(value.goods_id2));
 				})
