@@ -12,11 +12,11 @@
 		<br />
 		<el-row>
 			<el-col>
-				<el-button type="primary" @click="dialogVisible = true" round>生成优惠活动</el-button>
+				<el-button type="primary" @click="generateDiscount" round>生成优惠活动</el-button>
 			</el-col>
 		</el-row>
 		<el-dialog title="生成优惠活动" :visible.sync="dialogVisible" width="50%">
-			<discount-list :discount-list="recommendDiscountList" @remove="handleRemove2"></discount-list>
+			<recommend-discount-list :discount-list="recommendDiscountList" @remove="handleRemove2"></recommend-discount-list>
 			<br />
 			<el-row>
 				<el-col :span="8" :offset="8">
@@ -34,8 +34,9 @@
 	</div>
 </template>
 
-<script> 
+<script>
 	import discountList from '@/components/manage/discount-list'
+	import recommendDiscountList from '@/components/manage/discount/recommend-discount-list'
 	import discountForm from '@/components/manage/discount/discount-form'
 	export default {
 		data() {
@@ -70,27 +71,16 @@
 				return result;
 			},
 			recommendDiscountList() {
-				var result = [];
-				this.$store.state.goods.recommendDiscountList.forEach(value => {
-					result.push({
-						goods_id: value.goods_id,
-						goods_name: this.$store.getters.getGoodsById(value.goods_id).goods_name,
-						discount: value.discount,
-						start_time: new Date(value.start_time * 1).datetime(),
-						end_time: new Date(value.end_time * 1).datetime(),
-						discount_id: value.discount_id
-					})
-				})
-				return result;
+				return this.$store.state.goods.recommendDiscountList;
 			}
 		},
 		created() {
-			console.log(this.$store.state.goods.discountList)
-			console.log(this.$store.getters.getGoodsById('1'))
 			this.$store.dispatch('loadDiscountList');
-			this.$store.dispatch('loadGoods')
-			//this.$store.dispatch('loadRecommendDiscountList');
-			this.$store.commit('loadRecommendDiscountList', []);
+			this.$store.dispatch('loadGoods');
+			this.$store.dispatch('loadCurrentMonthRecord').then(() => {
+				this.loadRecommendDiscountList();
+			});
+
 		},
 		methods: {
 			add() {
@@ -116,13 +106,13 @@
 				})
 				//console.log(this.recommendDiscountList)
 				console.log(this.$store.getters.getGoodsByName(form.goodsName))
-				
+
 				this.$message({
-							message: '添加成功',
-							type: 'success'
-						})
+					message: '添加成功',
+					type: 'success'
+				})
 				this.seem = false;
-				
+
 			},
 			handleCancel() {
 				this.seem = false;
@@ -135,12 +125,43 @@
 					this.$store.dispatch('loadDiscountList');
 				})
 			},
-			handleRemove2(discount_id) {
-				
+			handleRemove2(index) {
+				this.recommendDiscountList.splice(index, 1);
+			},
+			loadRecommendDiscountList() {
+				var goods = [];
+				var result = [];
+				var length = this.$store.state.goods.goodsList.length;
+				for(let i = 0; i < 3; i++) {
+					let flag = false;
+					this.discountList.forEach(value => {
+						if(value.goods_id == this.$store.state.saleRecord.currentMonthRecord[length - 1 - i].goods_id) {
+							flag = true;
+						};
+					})
+					if(flag == false) {
+							goods.push(this.$store.state.saleRecord.currentMonthRecord[length - 1 - i].goods_id);
+						}
+				};
+				goods.forEach(value => {
+					result.push({
+						goods_id: value,
+						goods_name: this.$store.getters.getGoodsById(value).goods_name,
+						discount: 0.7,
+						start_time: new Date().datetime(),
+						end_time: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7).datetime()
+					})
+				})
+				this.$store.commit('loadRecommendDiscountList', result);
+			},
+			generateDiscount() {
+				this.dialogVisible = true;
+				this.loadRecommendDiscountList();
 			}
 		},
 		components: {
 			discountList,
+			recommendDiscountList,
 			discountForm
 		}
 	}

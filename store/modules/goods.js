@@ -32,6 +32,11 @@ const getters = {
 					flag = true;
 				}
 			})
+			state.recommendDiscountList.forEach(value3 => {
+				if(value3.goods_id == value.goods_id) {
+					flag = true;
+				}
+			})
 			if(flag == false) {
 				result.push({
 					value: value.goods_name
