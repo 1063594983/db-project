@@ -20,7 +20,8 @@ var sqlMap = {
 		getDiscount: 'select * from discount where start_time <= ? and end_time >= ?',
 		addDiscount: 'insert into discount(goods_id, discount, start_time, end_time) values(?, ?, ?, ?)',
 		deleteDiscount: 'delete from discount where discount_id = ?',
-		getGoodsRank: 'select * from goods_rank'
+		getGoodsRank: 'select * from goods_rank',
+		getRelativeGoodsById: 'call get_relative_goods(?)'
 	},
 	goods_type: {
 		get: 'select type_id, type_name from goods_type'

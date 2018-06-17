@@ -64,13 +64,42 @@ router.post('/buyGoods', (req, res) => {
 			console.log(err);
 		}
 	})
+	var goodsIdList = [];
 	params.shoppingCart.forEach(value => {
 		conn.query(sql2, [value.goods_id, value.amount, current_time, member_user], (err, result) => {
 			if(err) {
 				console.log(err);
 			}
 		})
+		goodsIdList.push(value.goods_id);
 	})
+	var length = goodsIdList.length;
+
+	for(let i = 0; i < length - 1; i++) {
+		for(let j = i; j < length; j++) {
+			if(goodsIdList[i] > goodsIdList[j]) {
+				var temp = goodsIdList[i];
+				goodsIdList[i] = goodsIdList[j];
+				goodsIdList[j] = temp;
+			}
+		}
+	}
+
+	for(let i = 0; i < length - 1; i++) {
+		for(let j = i + 1; j < length; j++) {
+			var sql = "update goods_dependency set weight = weight + 1 where goods_id1 = ? and goods_id2 = ?";
+			conn.query(sql, [goodsIdList[i], goodsIdList[j]], (err, result) => {
+				if(err) {
+					console.log(err);
+				}
+			})
+			conn.query(sql, [goodsIdList[j], goodsIdList[i]], (err, result) => {
+				if(err) {
+					console.log(err);
+				}
+			})
+		}
+	}
 	res.end();
 
 })
@@ -619,6 +648,19 @@ router.get('/getGoodsRank', (req, res) => {
 	})
 })
 
+router.get('/getRelativeGoodsById', (req, res) => {
+	var sql = $sql.goods.getRelativeGoodsById;
+	var goods_id = req.query.goods_id;
+	conn.query(sql, [goods_id], (err, result) => {
+		if(err) {
+			console.log(err);
+		}
+		if(result) {
+			res.send(result[0]);
+		}
+	})
+})
+
 /*
  * 生成库存数据
 router.get('/generateData', (req, res) => {
@@ -729,5 +771,30 @@ router.get('/buyGoods', (req, res) => {
 	res.send(t1.toString());
 })
 */
+
+/*
+ *初始化goods_dependency
+ * */
+router.get('/initGoodsDependency', (req, res) => {
+	var sql = "insert into goods_dependency values(?, ?, 1)";
+	for(let i = 1; i <= 28; i++) {
+		for(let j = 1; j <= 28; j++) {
+			if(i != j) {
+				conn.query(sql, [i, j], (err, result) => {
+					if(err) {
+						console.log(err);
+					}
+				})
+				conn.query(sql, [j, i], (err, result) => {
+					if(err) {
+						console.log(err);
+					}
+				})
+			}
+
+		}
+	}
+	res.end();
+})
 
 module.exports = router;

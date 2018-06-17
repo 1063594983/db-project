@@ -16,7 +16,7 @@
 		</el-row>
 		<el-row>
 			<el-col :span="16" :offset="4">
-				<recommend-line :recommend-list="recommendList" :text="text"></recommend-line>
+				<recommend-line v-if="recommendList.length != 0" :recommend-list="recommendList" :text="text"></recommend-line>
 			</el-col>
 		</el-row>
 	</div>
@@ -30,43 +30,7 @@
 		data() {
 			return {
 				rank: 3,
-				recommendList: [{
-					"type_id": 1,
-					"goods_id": 1,
-					"goods_name": "越南白心火龙果（1个）",
-					"goods_description": "越南白心火龙果（1个）",
-					"goods_price": 7.9,
-					"goods_image": "[{\"src\": \"/static/images/fruits/dragon_fruit1.jpg\"}, {\"src\": \"/static/images/fruits/dragon_fruit2.jpg\"}]",
-					"goods_source": "越南",
-					"type_name": "生鲜水果"
-				}, {
-					"type_id": 1,
-					"goods_id": 2,
-					"goods_name": "山东红富士苹果（3个）",
-					"goods_description": "山东红富士苹果（3个）",
-					"goods_price": 6.9,
-					"goods_image": "[{\"src\": \"/static/images/fruits/apple1.jpg\"}]",
-					"goods_source": "山东",
-					"type_name": "生鲜水果"
-				}, {
-					"type_id": 2,
-					"goods_id": 3,
-					"goods_name": "新西兰低脂牛奶（250ml x 24盒）",
-					"goods_description": "新西兰低脂牛奶（250ml x 24盒）",
-					"goods_price": 72,
-					"goods_image": "[{\"src\": \"/static/images/food/milk1.jpg\"}]",
-					"goods_source": "新西兰",
-					"type_name": "进口食品"
-				}, {
-					"type_id": 3,
-					"goods_id": 4,
-					"goods_name": "三只松鼠开心果（225g x 1袋）",
-					"goods_description": "三只松鼠开心果（225g x 1袋）",
-					"goods_price": 28.9,
-					"goods_image": "[{\"src\": \"/static/images/food/pistachio1.jpg\"}]",
-					"goods_source": "上海",
-					"type_name": "休闲零食"
-				}],
+				recommendList: [],
 				text: '购买了此商品的顾客还买了',
 				goods_id: ''
 			}
@@ -86,6 +50,16 @@
 			this.$store.dispatch("loadCurrentMonthRecord");
 			this.goods_id = this.$router.currentRoute.path.split('/').pop();
 			this.rank = this.$store.getters.getGoodsById(this.goods_id).rank.toFixed(1) * 1;
+			this.$axios.get('/api/goods/getRelativeGoodsById', {
+				params: {
+					goods_id: this.goods_id
+				}
+			}).then(res => {
+				console.log(res.data);
+				res.data.forEach(value => {
+					this.recommendList.push(this.$store.getters.getGoodsById(value.goods_id2));
+				})
+			})
 		},
 		methods: {
 			
