@@ -12,10 +12,6 @@
 				
 			}
 		},
-		created() {
-			
-			console.log(this.$store.state.saleRecord.currentMonthRecord)
-		},
 		computed: {
 			goodsSaleList() {
 				return this.$store.state.saleRecord.currentMonthRecord;
