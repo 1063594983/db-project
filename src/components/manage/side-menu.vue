@@ -3,16 +3,7 @@
 		@open="handleOpen" @close="handleClose" 
 		:collapse="isCollapse" @select="handleSelect" background-color="#545c64"
 		text-color="#fff" active-text-color="#ffd04b">
-		<el-submenu index="1">
-			<template slot="title">
-				<i class="el-icon-location"></i>
-				<span slot="title">员工管理</span>
-			</template>
-			<el-menu-item-group>
-				<el-menu-item index="employee-info">员工信息</el-menu-item>
-			</el-menu-item-group>
-		</el-submenu>
-		<el-submenu index="2">
+		<el-submenu index="store-manage">
 			<template slot="title">
 				<i class="el-icon-location"></i>
 				<span slot="title">店铺管理</span>

@@ -18,7 +18,6 @@ import contactUs from '@/views/sale/contact-us'
 import about from '@/views/sale/about'
 
 import manage from '@/views/manage/index'
-import employeeInfo from '@/views/manage/employee-info'
 import saleChart from '@/views/manage/sale-chart'
 import saleLinechart from '@/views/manage/sale-linechart'
 import discount from '@/views/manage/discount'
@@ -89,10 +88,7 @@ export default new Router({
     	component: manage,
     	children: [{
     		path: '',
-    		redirect: 'employee-info'
-    	}, {
-    		path: 'employee-info',
-    		component: employeeInfo
+    		redirect: 'sale-chart'
     	}, {
     		path: 'sale-chart',
     		component: saleChart
