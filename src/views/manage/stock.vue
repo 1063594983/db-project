@@ -87,6 +87,7 @@
 					import_list: this.$store.state.goods.recommendImportList
 				}).then(res => {
 					this.$store.commit('loadRecommendImportList', []);
+					this.importList = [];
 					this.$store.dispatch('loadStockList');
 					this.dialogVisible = false
 				})
