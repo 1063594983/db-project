@@ -81,7 +81,9 @@
 				return this.$store.state.goodsList;
 			}
 		},
-		mounted() {
+		created() {
+			this.rank = [];
+			this.comment = [];
 			this.goods.forEach(value => {
 				this.rank.push(3);
 				this.comment.push("默认好评");
@@ -92,8 +94,6 @@
 				this.$emit('confirmReceive', this.recordId);
 			},
 			submit() {
-				console.log(this.comment);
-				console.log(this.rank);
 				var data = [];
 				this.goods.forEach((value, index) => {
 					data.push({
@@ -106,8 +106,6 @@
 				this.$axios.post('/api/comment/addComment', {
 					comments: data
 				}).then(() => {
-					this.rank = [];
-					this.comment = [];
 					this.$axios.post('/api/comment/confirmComment', {
 						record_id: this.recordId
 					}).then(() => {
