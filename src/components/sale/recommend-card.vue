@@ -37,14 +37,11 @@
 		},
 		created() {
 			this.$store.dispatch('loadTypeNames');
-			console.log(this.typeNames);
 		},
 		methods: {
 			cancel() {
-				console.log(this.habit);
 			},
 			confirm() {
-				console.log(this.habit);
 				this.$emit('confirm', this.habit);
 			}
 		}

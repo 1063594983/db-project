@@ -70,7 +70,6 @@
 		methods: {
 			handleFilter(option) {
 				this.filterOption = option;
-				console.log(this.filterOption)
 				this.updateList();
 			},
 			updateList() {
@@ -113,7 +112,6 @@
 			},
 			handleConfirm(habit) {
 				this.dialogVisible = false;
-				console.log(habit);
 				this.$axios.post('/api/customer/confirmRecommend', {
 					customer_id: this.$cookieStore.getCookie('username'),
 					habit: habit
