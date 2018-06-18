@@ -6,7 +6,8 @@ const state = {
 	discountList: [],
 	recommendDiscountList: [],
 	stockList: [],
-	recommendGoodsList: []
+	recommendGoodsList: [],
+	recommendImportList: []
 }
 
 // getters
@@ -153,6 +154,9 @@ const mutations = {
 	},
 	loadRecommendGoodsList: (state, data) => {
 		state.recommendGoodsList = data;
+	},
+	loadRecommendImportList: (state, data) => {
+		state.recommendImportList = data;
 	}
 }
 

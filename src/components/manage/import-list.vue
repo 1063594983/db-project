@@ -5,7 +5,7 @@
 			</el-table-column>
 			<el-table-column label="进货量" width="150">
 				<template slot-scope="scope">
-					<el-input v-model="importData[scope.$index]"></el-input>
+					<el-input v-model="pageList[scope.$index].import_amount" @change="update"></el-input>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -39,12 +39,17 @@
 		},
 		created() {
 			this.importList.forEach(value => {
-				this.importData.push(value.amount);
+				this.importData.push(value.import_amount);
 			})
 		},
 		props: {
 			importList: {
 				type: Array
+			}
+		},
+		methods: {
+			update() {
+				this.$store.commit('loadRecommendImportList', this.importList);
 			}
 		}
 	}

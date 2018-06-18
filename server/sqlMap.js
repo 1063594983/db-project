@@ -21,7 +21,8 @@ var sqlMap = {
 		addDiscount: 'insert into discount(goods_id, discount, start_time, end_time) values(?, ?, ?, ?)',
 		deleteDiscount: 'delete from discount where discount_id = ?',
 		getGoodsRank: 'select * from goods_rank',
-		getRelativeGoodsById: 'call get_relative_goods(?)'
+		getRelativeGoodsById: 'call get_relative_goods(?)',
+		getRecommendImportList: 'call get_recommend_import_goods()'
 	},
 	goods_type: {
 		get: 'select type_id, type_name from goods_type'
@@ -54,7 +55,8 @@ var sqlMap = {
 		init: 'update customer_habit set type1 = ?, type2 = ?, type3 = ?, type4 = ?, type5 = ?, type6 = ?, type7 = ?, type8 = ? where customer_id = ?'
 	},
 	stock: {
-		getStock: 'select * from stock'
+		getStock: 'select * from stock order by remain desc',
+		addImportRecord: 'insert into import_record(goods_id, goods_amount, time) values(?, ?, ?)'
 	}
 }
 

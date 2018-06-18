@@ -661,6 +661,32 @@ router.get('/getRelativeGoodsById', (req, res) => {
 	})
 })
 
+router.get('/getRecommendImportList', (req, res) => {
+	var sql = $sql.goods.getRecommendImportList;
+	conn.query(sql, [], (err, result) => {
+		if(err) {
+			console.log(err);
+		}
+		if(result) {
+			res.send(result[0]);
+		}
+	})
+})
+
+router.post('/addImportRecord', (req, res) => {
+	var sql = $sql.stock.addImportRecord;
+	var importList = req.body.import_list;
+	var time = new Date().getTime();
+	importList.forEach(value => {
+		conn.query(sql, [value.goods_id, value.import_amount, time], (err, result) => {
+			if(err) {
+				console.log(err);
+			}
+		})
+	})
+	res.end();
+})
+
 /*
  * 生成库存数据
 router.get('/generateData', (req, res) => {
