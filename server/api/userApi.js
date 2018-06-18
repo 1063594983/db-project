@@ -96,6 +96,45 @@ router.get('/getCustomerConsume', (req, res) => {
 	})
 })
 
+router.post('/checkManager', (req, res) => {
+	var params = req.body;
+	conn.query($sql.user.checkManager, [params.username, params.password], (err, result) => {
+		if(err) {
+			console.log(err);
+		}
+		if(result.length == 1) {
+			res.send('success!');
+		} else {
+			res.send('Refuse!');
+		}
+	})
+})
+
+router.post('/addUser', (req, res) => {
+	var params = req.body;
+	conn.query("select * from member where login_user = ?", [params.username], (err, result) => {
+		if(err) {
+			console.log(err);
+		}
+		if(result.length == 1) {
+			res.send('Refuse!');
+		} else {
+			conn.query($sql.user.addUser, [params.username, params.password], (err, result) => {
+				if(err) {
+					console.log(err);
+				}
+				if(result) {
+					conn.query('insert into customer_habit values(?, 0, 0, 0, 0, 0, 0, 0, 0)', [params.username], (err, result) => {
+						if (err) {
+							console.log(err);
+						}
+						res.send("success!");
+					})				
+				}
+			})
+		}
+	})
+})
 
 /*
 router.post('/', (req,res) => {

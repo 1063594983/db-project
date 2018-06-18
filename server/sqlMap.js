@@ -9,7 +9,9 @@ var sqlMap = {
 		getCustomerInfo: 'select * from member where login_user = ?',
 		getSimilarUser: 'call get_similar_user(?)',
 		confirmRecommend: 'update member set is_first = 0 where login_user = ?',
-		getCustomerConsumeByYear: 'select * from customer_sale_month_statistics where customer_id = ? and year = ? order by month'
+		getCustomerConsumeByYear: 'select * from customer_sale_month_statistics where customer_id = ? and year = ? order by month',
+		checkManager: 'select * from manage where username = ? and password = ?',
+		addUser: 'insert into member(login_user, login_pwd, total_money, is_first) values(?, ?, 0, 1)'
 	},
 	goods: {
 		get: 'select * from (goods natural join goods_type natural join stock) natural join goods_rank order by goods_id',

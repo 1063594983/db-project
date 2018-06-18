@@ -1,4 +1,5 @@
 <template>
+
 	<el-container>
 		<el-aside width="100px">
 			<el-row>
@@ -16,7 +17,7 @@
 		<el-main>
 			<div id="form-body">
 				<el-col :span="12" :offset="6">
-					<el-button type="text" style="font-size: 25px; font-weight: bold;">用户登录</el-button>
+					<el-button type="text" style="font-size: 25px; font-weight: bold;">管理员登录</el-button>
 				</el-col>
 				<el-form ref="form" :model="form" :rules="rules" label-width="80px" class="demo-ruleForm">
 					<el-col :span="12" :offset="6">
@@ -39,10 +40,8 @@
 			</div>
 		</el-main>
 	</el-container>
-
 </template>
 <script>
-	import menu from '@/components/menu'
 	export default {
 		data() {
 			return {
@@ -65,23 +64,20 @@
 			}
 		},
 		computed: {
-			myName() {
-				return this.$store.state.username;
-			}
+
 		},
 		methods: {
 			submitForm(formName) {
 				this.$refs[formName].validate(valid => {
 					if(valid) {
-						this.$axios.post('/api/user/checkUser', {
+						this.$axios.post('/api/user/checkManager', {
 							username: this.form.username,
 							password: this.form.password
 						}).then(response => {
 							var str = response.data;
 							if(str != 'Refuse!') {
-								console.log(str);
 								this.$router.push({
-									path: '/sale/goods-sale'
+									path: '/manage'
 								});
 							} else {
 								//console.log('账号或密码错误');
@@ -89,7 +85,6 @@
 							}
 						})
 					} else {
-						console.log('error submit!');
 						return false;
 					}
 				});
@@ -104,8 +99,5 @@
 <style scoped>
 	#form-body {
 		margin-top: 60px;
-	}
-	router-link {
-		text-decoration: none;
 	}
 </style>

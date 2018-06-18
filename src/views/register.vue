@@ -16,7 +16,7 @@
 		<el-main>
 			<div id="form-body">
 				<el-col :span="12" :offset="6">
-					<el-button type="text" style="font-size: 25px; font-weight: bold;">用户登录</el-button>
+					<el-button type="text" style="font-size: 25px; font-weight: bold;">用户注册</el-button>
 				</el-col>
 				<el-form ref="form" :model="form" :rules="rules" label-width="80px" class="demo-ruleForm">
 					<el-col :span="12" :offset="6">
@@ -27,6 +27,11 @@
 					<el-col :span="12" :offset="6">
 						<el-form-item label="密码" prop="password">
 							<el-input v-model="form.password" type="password"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12" :offset="6">
+						<el-form-item label="确认密码" prop="repassword">
+							<el-input v-model="form.repassword" type="password"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12" :offset="6">
@@ -42,13 +47,22 @@
 
 </template>
 <script>
-	import menu from '@/components/menu'
 	export default {
 		data() {
+			var validatePass = (rule, value, callback) => {
+				if(value === '') {
+					callback(new Error('请再次输入密码'));
+				} else if(value !== this.form.password) {
+					callback(new Error('两次输入密码不一致!'));
+				} else {
+					callback();
+				}
+			};
 			return {
 				form: {
 					username: '',
-					password: ''
+					password: '',
+					repassword: ''
 				},
 				rules: {
 					username: [{
@@ -60,36 +74,38 @@
 						required: true,
 						message: '请输入密码',
 						trigger: 'blur'
+					}],
+					repassword: [{
+						validator: validatePass,
+						trigger: 'blur'
 					}]
 				}
 			}
 		},
 		computed: {
-			myName() {
-				return this.$store.state.username;
-			}
+
 		},
 		methods: {
 			submitForm(formName) {
 				this.$refs[formName].validate(valid => {
 					if(valid) {
-						this.$axios.post('/api/user/checkUser', {
+						this.$axios.post('/api/user/addUser', {
 							username: this.form.username,
 							password: this.form.password
 						}).then(response => {
-							var str = response.data;
-							if(str != 'Refuse!') {
-								console.log(str);
+							if(response.data == 'Refuse!') {
+								this.$message({
+									message: '该用户名已被注册!',
+									type: 'error'
+								})
+							} else {
+								this.$cookieStore.setCookie('username', this.form.username);
 								this.$router.push({
 									path: '/sale/goods-sale'
 								});
-							} else {
-								//console.log('账号或密码错误');
-								this.$message.error('账号或密码错误!');
 							}
 						})
 					} else {
-						console.log('error submit!');
 						return false;
 					}
 				});
@@ -105,6 +121,7 @@
 	#form-body {
 		margin-top: 60px;
 	}
+	
 	router-link {
 		text-decoration: none;
 	}

@@ -3,8 +3,10 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 
 import login from '@/views/login'
+import manageLogin from '@/views/manage-login'
 import demo from '@/views/demo'
 import demo2 from '@/views/demo2'
+import register from '@/views/register'
 
 import sale from '@/views/sale/index'
 import goodsSale from '@/views/sale/goods-sale'
@@ -33,6 +35,14 @@ export default new Router({
       path: '/',
       name: 'login',
       component: login
+    },
+    {
+    	path: '/manage-login',
+    	component: manageLogin
+    },
+    {
+    	path: '/register',
+    	component: register
     },
     {
     	path: '/demo',
