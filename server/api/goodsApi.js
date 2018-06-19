@@ -823,4 +823,58 @@ router.get('/initGoodsDependency', (req, res) => {
 	res.end();
 })
 
+router.get('/getRecommendGoodsListByCart', (req, res) => {
+	var sql = $sql.goods.getRelativeGoodsById;
+	var shoppingCart = req.query.shopping_cart;
+	var recommendList = [];
+	if(shoppingCart != null) {
+		var length = shoppingCart.length;
+		shoppingCart.forEach((value, index) => {
+			conn.query(sql, [JSON.parse(value).goods_id], (err, result) => {
+				if(err) {
+					console.log(err);
+				}
+				if(result) {
+					result[0].forEach(value2 => {
+						var flag = false;
+						shoppingCart.forEach(value3 => {
+							if(value2.goods_id2 == JSON.parse(value3).goods_id) {
+								flag = true;
+							}
+						})
+						if(flag == false) {
+							recommendList.push({
+								goods_id: value2.goods_id2
+							});
+						}
+					})
+					if(index == length - 1) {
+						let length2 = recommendList.length;
+						var temp = new Set();
+						for(let i = 0; i < length2; i++) {
+							let num = Math.floor(Math.random() * (length2 - 1));
+							temp.add(recommendList[num].goods_id);
+						}
+						var temp2 = [];
+						var times = 0;
+						temp.forEach(value5 => {
+							times++;
+							if(times <= 4) {
+								temp2.push({
+									goods_id: value5
+								})
+							}
+
+						})
+						res.send(temp2);
+					}
+				}
+			})
+		})
+	} else {
+		res.end();
+	}
+
+})
+
 module.exports = router;

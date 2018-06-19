@@ -26,11 +26,14 @@
 		},
 		methods: {
 			showGoods() {
-				this.$store.dispatch("loadCustomerConsume", {
-				year: 2000
-			});
-			this.$store.dispatch('loadGoodsRank');
-			console.log(this.$store.state.goods.goodsRank)
+				console.log(this.$store.state.cart.shoppingCart)
+				this.$axios.get('/api/goods/getRecommendGoodsListByCart', {
+					params: {
+						shopping_cart: this.$store.state.cart.shoppingCart
+					}
+				}).then(() => {
+					
+				})
 			}
 		},
 		components: {

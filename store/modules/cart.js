@@ -1,7 +1,8 @@
 import Vue from 'vue'
 
 const state = {
-	shoppingCart: []
+	shoppingCart: [],
+	recommendGoodsListByCart: []
 }
 
 // getters

@@ -1,17 +1,7 @@
 <template>
 	<el-container>
-		<el-aside width="100px">
-			<el-row>
-				<router-link to="/">用户登录</router-link>
-			</el-row>
-			<br />
-			<el-row>
-				<router-link to="/register">用户注册</router-link>
-			</el-row>
-			<br />
-			<el-row>
-				<router-link to="/manage-login">管理员登录</router-link>
-			</el-row>
+		<el-aside width="150px">
+			<login-menu></login-menu>
 		</el-aside>
 		<el-main>
 			<div id="form-body">
@@ -42,7 +32,7 @@
 
 </template>
 <script>
-	import menu from '@/components/menu'
+	import loginMenu from '@/components/menu'
 	export default {
 		data() {
 			return {
@@ -79,7 +69,6 @@
 						}).then(response => {
 							var str = response.data;
 							if(str != 'Refuse!') {
-								console.log(str);
 								this.$router.push({
 									path: '/sale/goods-sale'
 								});
@@ -89,7 +78,6 @@
 							}
 						})
 					} else {
-						console.log('error submit!');
 						return false;
 					}
 				});
@@ -97,6 +85,9 @@
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
 			}
+		},
+		components: {
+			loginMenu
 		}
 	}
 </script>
